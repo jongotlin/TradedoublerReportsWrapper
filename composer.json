@@ -1,0 +1,23 @@
+{
+    "name": "jongotlin/tradedoubler-reports-wrapper",
+    "description": "Wrapper for Tradedoubler's reports",
+    "keywords": ["tradedoubler", "affiliate"],
+    "license": "MIT",
+    "homepage": "https://github.com/jongotlin/TradedoublerReportsWrapper",
+    "authors": [
+        {
+            "name": "Jon Gotlin",
+            "email": "jon@jon.se"
+        }
+    ],
+    "require": {
+        "php": ">=5.4",
+        "guzzle/guzzle": "3.*",
+        "jongotlin/affiliate-interfaces": "0.1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "TradedoublerReportWrapper\\": "src/TradedoublerReportWrapper"
+        }
+    }
+}
