@@ -43,6 +43,46 @@ class Tradedoubler
     }
 
     /**
+     * @return Program[]
+     */
+    public function getPrograms()
+    {
+        $result = $this->load(
+            sprintf(
+                'http://reports.tradedoubler.com/pan/aReport3Key.action?reportName=aAffiliateMyProgramsReport' .
+                '&columns=programId&columns=affiliateId&columns=applicationDate&columns=status&metric1.lastOperator=/'.
+                '&interval=MONTHS&metric1.summaryType=NONE&includeWarningColumn=true&metric1.operator1=/'.
+                '&latestDayToExecute=0&reportTitleTextKey=REPORT3_SERVICE_REPORTS_AAFFILIATEMYPROGRAMSREPORT_TITLE'.
+                '&metric1.columnName1=programId&setColumns=true&metric1.columnName2=programId&metric1.midOperator=/'.
+                '&isEditPage=true&sortBy=orderDefault&customKeyMetricCount=0&key=%s&format=XML',
+                $this->key
+            )
+        );
+
+        return $this->denormalizer->denormalizePrograms(new \SimpleXMLElement($result));
+    }
+
+    /**
+     * @return Channel[]
+     */
+    public function getChannels()
+    {
+        $result = $this->load(
+            sprintf(
+                'http://reports.tradedoubler.com/pan/aReport3Key.action?reportName=aAffiliateMyProgramsReport' .
+                '&columns=programId&columns=affiliateId&columns=applicationDate&columns=status&metric1.lastOperator=/'.
+                '&interval=MONTHS&metric1.summaryType=NONE&includeWarningColumn=true&metric1.operator1=/'.
+                '&latestDayToExecute=0&reportTitleTextKey=REPORT3_SERVICE_REPORTS_AAFFILIATEMYPROGRAMSREPORT_TITLE'.
+                '&metric1.columnName1=programId&setColumns=true&metric1.columnName2=programId&metric1.midOperator=/'.
+                '&isEditPage=true&sortBy=orderDefault&customKeyMetricCount=0&key=%s&format=XML',
+                $this->key
+            )
+        );
+
+        return $this->denormalizer->denormalizeChannels(new \SimpleXMLElement($result));
+    }
+
+    /**
      * @param \DateTime $from
      * @param \DateTime $to
      *

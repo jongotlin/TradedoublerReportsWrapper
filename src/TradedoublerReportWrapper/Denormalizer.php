@@ -7,6 +7,66 @@ class Denormalizer
     /**
      * @param \SimpleXMLElement $xml
      *
+     * @return Program[]
+     */
+    public function denormalizePrograms(\SimpleXMLElement $xml)
+    {
+        $programs = [];
+        foreach ($xml->matrix[1]->rows->row as $row) {
+            $program = $this->denormalizeProgram($row);
+            $programs[$program->getId()] = $program;
+        }
+
+        return array_values($programs);
+    }
+
+    /**
+     * @param \SimpleXMLElement $xml
+     *
+     * @return Program
+     */
+    public function denormalizeProgram(\SimpleXMLElement $xml)
+    {
+        $program = new Program();
+        $program->setId(intval($xml->programId));
+        $program->setName(strval($xml->programName));
+
+        return $program;
+    }
+
+    /**
+     * @param \SimpleXMLElement $xml
+     *
+     * @return Channel[]
+     */
+    public function denormalizeChannels(\SimpleXMLElement $xml)
+    {
+        $channels = [];
+        foreach ($xml->matrix[1]->rows->row as $row) {
+            $channel = $this->denormalizeChannel($row);
+            $channels[$channel->getId()] = $channel;
+        }
+
+        return array_values($channels);
+    }
+
+    /**
+     * @param \SimpleXMLElement $xml
+     *
+     * @return Channel
+     */
+    public function denormalizeChannel(\SimpleXMLElement $xml)
+    {
+        $channel = new Channel();
+        $channel->setId(intval($xml->affiliateId));
+        $channel->setName(strval($xml->siteName));
+
+        return $channel;
+    }
+
+    /**
+     * @param \SimpleXMLElement $xml
+     *
      * @return Transaction[]
      */
     public function denormalizeTransactions(\SimpleXMLElement $xml)
@@ -29,18 +89,18 @@ class Denormalizer
         $transaction = new Transaction();
         $transaction->setCreatedAt(\DateTime::createFromFormat('Y-m-d H:i:s T', $row->timeOfEvent));
         $transaction->setClickedAt(\DateTime::createFromFormat('Y-m-d H:i:s T', $row->timeOfVisit));
-        $transaction->setEpi($row->epi1);
-        $transaction->setOrderId($row->orderNR);
+        $transaction->setEpi(strval($row->epi1));
+        $transaction->setOrderId(strval($row->orderNR));
         $program = new Program();
-        $program->setId($row->programId);
-        $program->setName($row->programName);
+        $program->setId(intval($row->programId));
+        $program->setName(strval($row->programName));
         $transaction->setProgram($program);
         $channel = new Channel();
-        $channel->setId($row->siteId);
-        $channel->setName($row->siteName);
+        $channel->setId(intval($row->siteId));
+        $channel->setName(strval($row->siteName));
         $transaction->setChannel($channel);
-        $transaction->setOrderValue(intval($row->orderValue * 100));
-        $transaction->setCommission(intval($row->affiliateCommission * 100));
+        $transaction->setOrderValue(intval(intval($row->orderValue) * 100));
+        $transaction->setCommission(intval(intval($row->affiliateCommission) * 100));
 
         return $transaction;
     }
