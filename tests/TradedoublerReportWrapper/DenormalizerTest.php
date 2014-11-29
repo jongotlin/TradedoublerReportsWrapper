@@ -18,6 +18,23 @@ class DenormalizerTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @dataProvider transactionProvider
+     */
+    public function testCreateDate($xml)
+    {
+        /** @var \TradedoublerReportWrapper\Transaction[] $transactions */
+        $transactions = (new Denormalizer())->denormalizeTransactions(new \SimpleXMLElement($xml));
+
+        //Guard
+        $this->assertInstanceOf('\TradedoublerReportWrapper\Transaction', $transactions[0]);
+
+        $this->assertEquals('2014-09-07 20:48:34', $transactions[0]->getClickedAt()->format('Y-m-d H:i:s'));
+        $this->assertEquals('2014-09-07 20:55:27', $transactions[0]->getCreatedAt()->format('Y-m-d H:i:s'));
+        $this->assertEquals('2014-11-29 20:48:34', $transactions[1]->getClickedAt()->format('Y-m-d H:i:s'));
+        $this->assertEquals('2014-11-29 20:55:27', $transactions[1]->getCreatedAt()->format('Y-m-d H:i:s'));
+    }
+
+    /**
      * @return array
      */
     public function transactionProvider()
@@ -62,6 +79,31 @@ class DenormalizerTest extends PHPUnit_Framework_TestCase
 				<lastModified></lastModified>
 				<leadNR></leadNR>
 				<orderNR>1291265</orderNR>
+				<epi1></epi1>
+				<epi2></epi2>
+				<eventName>Avslut</eventName>
+				<pendingStatus>A</pendingStatus>
+				<pendingReason></pendingReason>
+				<siteId>2122225</siteId>
+				<graphicalElementName>Eget grafiskt element</graphicalElementName>
+				<productName></productName>
+				<productNrOf></productNrOf>
+				<productValue>0.0</productValue>
+				<open_product_feeds_id></open_product_feeds_id>
+				<open_product_feeds_name></open_product_feeds_name>
+				<voucher_code></voucher_code>
+				<affiliateCommission>22.192</affiliateCommission>
+			</row>
+			<row>
+				<programName>CoolStuff.se</programName>
+				<currentStatusExcel>Ok</currentStatusExcel>
+				<programId>42673</programId>
+				<timeOfVisit>2014-11-29 20:48:34 UTC+1</timeOfVisit>
+				<timeOfEvent>2014-11-29 20:55:27 UTC+1</timeOfEvent>
+				<timeInSession>Y</timeInSession>
+				<lastModified></lastModified>
+				<leadNR></leadNR>
+				<orderNR>1291266</orderNR>
 				<epi1></epi1>
 				<epi2></epi2>
 				<eventName>Avslut</eventName>

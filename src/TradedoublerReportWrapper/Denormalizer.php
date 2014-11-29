@@ -86,11 +86,14 @@ class Denormalizer
      */
     public function denormalizeTransaction(\SimpleXMLElement $row)
     {
-        $createdAt = \DateTime::createFromFormat('Y-m-d H:i:s T', $row->timeOfEvent);
+        // @todo fix dates!
+        $createdAt = \DateTime::createFromFormat('Y-m-d H:i:s T', str_replace('UTC+1', 'UTC', $row->timeOfEvent));
+        $clickedAt = \DateTime::createFromFormat('Y-m-d H:i:s T', str_replace('UTC+1', 'UTC', $row->timeOfVisit));
+
         $transaction = new Transaction();
         $transaction->setId($createdAt->getTimestamp() . '_' . $row->orderNR);
         $transaction->setCreatedAt($createdAt);
-        $transaction->setClickedAt(\DateTime::createFromFormat('Y-m-d H:i:s T', $row->timeOfVisit));
+        $transaction->setClickedAt($clickedAt);
         $transaction->setEpi(strval($row->epi1));
         $transaction->setOrderId(strval($row->orderNR));
         $program = new Program();
