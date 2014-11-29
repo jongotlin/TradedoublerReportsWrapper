@@ -104,8 +104,8 @@ class Denormalizer
         $channel->setId(intval($row->siteId));
         $channel->setName(strval($row->siteName));
         $transaction->setChannel($channel);
-        $transaction->setOrderValue(intval(intval($row->orderValue) * 100));
-        $transaction->setCommission(intval(intval($row->affiliateCommission) * 100));
+        $transaction->setOrderValue(round((float)$row->orderValue * (float)100));
+        $transaction->setCommission(round((float)$row->affiliateCommission * (float)100));
 
         return $transaction;
     }
